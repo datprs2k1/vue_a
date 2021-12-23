@@ -3,6 +3,9 @@ import { createRouter, createWebHistory } from 'vue-router';
 import Home from './pages/Home.vue';
 import Login from './pages/Login.vue';
 import Register from './pages/Register.vue';
+import CreatePost from './pages/post/Create.vue';
+import ListPost from './pages/post/Index.vue';
+import EditPost from './pages/post/Edit.vue';
 import store from './store';
 
 const routes = [
@@ -28,6 +31,30 @@ const routes = [
         name: 'register',
         meta: {
             guest: true,
+        }
+    },
+    {
+        path: '/post/create',
+        component: CreatePost,
+        name: 'create-post',
+        meta: {
+            requiresAuth: true,
+        }
+    },
+    {
+        path: '/post',
+        component: ListPost,
+        name: 'list-post',
+        meta: {
+            requiresAuth: true,
+        }
+    },
+    {
+        path: '/post/edit/:id',
+        component: EditPost,
+        name: 'edit-post',
+        meta: {
+            requiresAuth: true,
         }
     }
 ];

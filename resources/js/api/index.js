@@ -17,7 +17,17 @@ const post = (url, data) => {
     return axios.post(`${api_url}${url}`, data, { headers: getHeaders() });
 }
 
+const put = (url, data) => {
+    return axios.put(`${api_url}${url}`, data, { headers: getHeaders() });
+}
+
+const del = (url) => {
+    return axios.delete(`${api_url}${url}`, { headers: getHeaders() });
+}
+
 export default {
     get,
-    post
+    post,
+    put,
+    del
 }

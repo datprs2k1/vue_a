@@ -44,7 +44,11 @@
             >
           </li>
           <li>
-            <a href="#" class="nav-link px-2 text-white">Post</a>
+            <router-link
+              :to="{ name: 'list-post' }"
+              class="nav-link px-2 text-white"
+              >Post</router-link
+            >
           </li>
         </ul>
 

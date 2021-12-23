@@ -2,7 +2,7 @@
   <div class="container">
     <div class="col-md-4 mx-auto mt-5">
       <h1 class="mb-3 text-center">LOGIN</h1>
-      <form @submit.prevent="submit(user)">
+      <form @submit.prevent="submit()">
         <div class="mb-3">
           <label for="email" class="form-label">Email address</label>
           <input
@@ -51,9 +51,9 @@ export default {
     };
   },
   methods: {
-    async submit(user) {
+    async submit() {
       try {
-        await this.$store.dispatch("auth/login", user);
+        await this.$store.dispatch("auth/login", this.user);
         this.$swal({
           title: "Thành công.",
           text: "Đằng nhập thành công.",
