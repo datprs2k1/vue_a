@@ -20878,37 +20878,34 @@ var routes = [{
 }, {
   path: '/login',
   component: _pages_Login_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
-  name: 'login',
-  meta: {
-    guest: true
-  }
+  name: 'login'
 }, {
   path: '/register',
   component: _pages_Register_vue__WEBPACK_IMPORTED_MODULE_2__["default"],
-  name: 'register',
-  meta: {
-    guest: true
-  }
+  name: 'register'
 }, {
   path: '/post/create',
   component: _pages_post_Create_vue__WEBPACK_IMPORTED_MODULE_3__["default"],
   name: 'create-post',
   meta: {
-    requiresAuth: true
+    requiresAuth: true,
+    requiredRoles: ['admin']
   }
 }, {
   path: '/post',
   component: _pages_post_Index_vue__WEBPACK_IMPORTED_MODULE_4__["default"],
   name: 'list-post',
   meta: {
-    requiresAuth: true
+    requiresAuth: true,
+    requiredRoles: ['admin']
   }
 }, {
   path: '/post/edit/:id',
   component: _pages_post_Edit_vue__WEBPACK_IMPORTED_MODULE_5__["default"],
   name: 'edit-post',
   meta: {
-    requiresAuth: true
+    requiresAuth: true,
+    requiredRoles: ['admin']
   }
 }];
 var router = (0,vue_router__WEBPACK_IMPORTED_MODULE_7__.createRouter)({
@@ -20931,14 +20928,14 @@ router.beforeEach(function (to, from, next) {
 });
 router.beforeEach(function (to, from, next) {
   if (to.matched.some(function (record) {
-    return record.meta.guest;
+    return record.meta.requiredRoles;
   })) {
-    if (_store__WEBPACK_IMPORTED_MODULE_6__["default"].getters["auth/isAuthenticated"]) {
-      next("/");
+    if (_store__WEBPACK_IMPORTED_MODULE_6__["default"].getters["auth/currentUser"].role == to.meta.requiredRoles) {
+      next();
       return;
     }
 
-    next();
+    alert('You are not authorized to access this page');
   } else {
     next();
   }

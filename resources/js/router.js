@@ -21,17 +21,11 @@ const routes = [
         path: '/login',
         component: Login,
         name: 'login',
-        meta: {
-            guest: true,
-        }
     },
     {
         path: '/register',
         component: Register,
         name: 'register',
-        meta: {
-            guest: true,
-        }
     },
     {
         path: '/post/create',
@@ -39,6 +33,7 @@ const routes = [
         name: 'create-post',
         meta: {
             requiresAuth: true,
+            requiredRoles: ['admin'],
         }
     },
     {
@@ -47,6 +42,7 @@ const routes = [
         name: 'list-post',
         meta: {
             requiresAuth: true,
+            requiredRoles: ['admin'],
         }
     },
     {
@@ -55,6 +51,7 @@ const routes = [
         name: 'edit-post',
         meta: {
             requiresAuth: true,
+            requiredRoles: ['admin'],
         }
     }
 ];
@@ -76,16 +73,16 @@ router.beforeEach((to, from, next) => {
     }
 });
 
+
 router.beforeEach((to, from, next) => {
-    if (to.matched.some((record) => record.meta.guest)) {
-        if (store.getters['auth/isAuthenticated']) {
-            next("/");
+    if (to.matched.some((record) => record.meta.requiredRoles)) {
+        if (store.getters['auth/currentUser'].role == (to.meta.requiredRoles)) {
+            next();
             return;
         }
-        next();
+        alert('You are not authorized to access this page');
     } else {
         next();
     }
 });
-
 export default router;

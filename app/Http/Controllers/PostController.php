@@ -40,19 +40,25 @@ class PostController extends Controller
     public function store(Request $request)
     {
         //
-        $request->validate([
-            'title' => 'required|string|max:255|unique:posts',
-            'content' => 'required|string|max:255'
-        ]);
+        if (auth()->user()->hasRole('admin')) {
+            $request->validate([
+                'title' => 'required|string|max:255|unique:posts',
+                'content' => 'required|string|max:255'
+            ]);
 
-        $post = Post::create([
-            'title' => $request->title,
-            'content' => $request->content
-        ]);
+            $post = Post::create([
+                'title' => $request->title,
+                'content' => $request->content
+            ]);
 
-        return response()->json([
-            'success' => 'true'
-        ], 201);
+            return response()->json([
+                'success' => 'true'
+            ], 201);
+        } else {
+            return response()->json([
+                'error' => 'unauthorized'
+            ], 401);
+        }
     }
 
     /**
@@ -91,19 +97,25 @@ class PostController extends Controller
     public function update(Request $request, $id)
     {
         //
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'content' => 'required|string|max:255'
-        ]);
+        if (auth()->user()->hasRole('admin')) {
+            $request->validate([
+                'title' => 'required|string|max:255',
+                'content' => 'required|string|max:255'
+            ]);
 
-        $post = Post::find($id);
-        $post->title = $request->title;
-        $post->content = $request->content;
-        $post->save();
+            $post = Post::find($id);
+            $post->title = $request->title;
+            $post->content = $request->content;
+            $post->save();
 
-        return response()->json([
-            'success' => 'true'
-        ], 200);
+            return response()->json([
+                'success' => 'true'
+            ], 200);
+        } else {
+            return response()->json([
+                'error' => 'unauthorized'
+            ], 401);
+        }
     }
 
     /**
@@ -115,11 +127,17 @@ class PostController extends Controller
     public function destroy($id)
     {
         //
-        $post = Post::find($id);
-        $post->delete();
+        if (auth()->user()->hasRole('admin')) {
+            $post = Post::find($id);
+            $post->delete();
 
-        return response()->json([
-            'success' => 'true'
-        ], 200);
+            return response()->json([
+                'success' => 'true'
+            ], 200);
+        } else {
+            return response()->json([
+                'error' => 'unauthorized'
+            ], 401);
+        }
     }
 }
